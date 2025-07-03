@@ -3,6 +3,8 @@ package com.modulodocente.backend.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -61,21 +63,32 @@ public class GrupoController {
     }
 
     @PostMapping("agregaralumnos")
-    public Mono<Void> desdeAlumnos(@RequestParam List<Long> alumnocursoIds,
-                                   @RequestParam Long grupoId) {
+    public Mono<ResponseEntity<String>> desdeAlumnos(
+            @RequestParam List<Long> alumnocursoIds,
+            @RequestParam Long grupoId) {
+        
         return Flux.fromIterable(alumnocursoIds)
-            .flatMap(alumnocursoId ->
-                alumnoGrupoRepository.existsByAlumnocursoid(alumnocursoId)
-                    .flatMap(exists -> {
-                        if (!exists) {
-                            return alumnoGrupoRepository.save(new AlumnoGrupo(null, grupoId, alumnocursoId)).then();
-                        } else {
-                            return alumnoGrupoRepository.updateGrupoid(alumnocursoId, grupoId).then();
-                        }
-                    })
+            .flatMap(alumnocursoId -> 
+                alumnoGrupoRepository.findByAlumnocursoid(alumnocursoId)
+                    .flatMap(existing -> 
+                        // If exists, update the grupoId
+                        alumnoGrupoRepository.updateGrupoid(alumnocursoId, grupoId)
+                            .thenReturn("Updated")
+                    )
+                    .switchIfEmpty(
+                        // If doesn't exist, create new
+                        alumnoGrupoRepository.save(new AlumnoGrupo(null, grupoId, alumnocursoId))
+                            .thenReturn("Created")
+                    )
             )
-            .then(); // Devuelve Mono<Void> al final
+            .then(Mono.just(ResponseEntity.ok("Students added/updated successfully")))
+            .onErrorResume(e -> Mono.just(
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error processing request: " + e.getMessage())
+            ));
     }
+
+
 
     @PostMapping("eliminargrupo")
     public Mono<Void> eliminarGrupo(@RequestParam Long grupoId) {
@@ -84,11 +97,18 @@ public class GrupoController {
             .then(); // Devuelve Mono<Void>
     }
 
+    @PostMapping("vaciargrupo")
+    public Mono<Void> vaciarGrupo(@RequestParam Long grupoId) {
+        return alumnoGrupoRepository.deleteByGrupoid(grupoId)
+            .then();
+    }
+
+    @GetMapping("grupos/{codigo}/{cursoId}")
+    public Mono<Grupo> getGrupoByCodigoAndCursoId(@PathVariable String codigo, @PathVariable Integer cursoId) {
+        return grupoRepository.findByCodigoAndCursoId(codigo, cursoId);
+    }
 
 
 
 
-
-
-    
 }

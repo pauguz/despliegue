@@ -6,8 +6,6 @@ import com.modulodocente.backend.domain.model.Institucion;
 import com.modulodocente.backend.repository.CategoriaRepository;
 import com.modulodocente.backend.repository.InstitucionRepository;
 import com.modulodocente.backend.repository.DepartamentoRepository;
-
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 

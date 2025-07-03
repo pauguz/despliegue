@@ -113,4 +113,14 @@ public class AlumnoController {
         return alumnoRepository.findByCursoId(cursoId);
     }
 
+    @GetMapping("/nombre-apellido/{nombre}/{apellido}/{cursoId}")
+    public Mono<Long> buscarAlumnoPorNombreApellido(@PathVariable String nombre, @PathVariable String apellido, @PathVariable Integer cursoId) {
+        return alumnoRepository.findByNombreAndApellidoAndCursoId(nombre, apellido, cursoId);
+    }
+
+    @GetMapping("/in-curso/{alumnocursoId}/{cursoId}")
+    public Mono<Boolean> inCurso(@PathVariable Integer alumnocursoId, @PathVariable Integer cursoId) {
+        return alumnoRepository.inCurso(alumnocursoId, cursoId);
+    }
+
 }

@@ -25,8 +25,6 @@ public interface GrupoRepository extends ReactiveCrudRepository<Grupo, Integer> 
     """)  
     Flux<Grupo> findByCursoId(Integer cursoId);
 
-
-
     @Query("""
         SELECT g.*
         FROM grupo g
@@ -55,5 +53,14 @@ public interface GrupoRepository extends ReactiveCrudRepository<Grupo, Integer> 
         WHERE grupoid = :grupoId
     """)
     Mono<Void> deleteById(Long grupoId);
+
+    @Query("""
+        SELECT DISTINCT g.*
+        FROM grupo g
+        JOIN alumnogrupo ag ON g.id = ag.grupoid
+        JOIN alumnocurso ac ON ag.alumnocursoid = ac.id
+        WHERE g.codigo = :codigo AND ac.cursoid = :cursoId
+    """)
+    Mono<Grupo> findByCodigoAndCursoId(String codigo, Integer cursoId);
 
 }

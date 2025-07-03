@@ -31,11 +31,31 @@ public interface AlumnoRepository extends ReactiveCrudRepository<Alumno, Long> {
         SELECT a.*
         FROM alumno a
         JOIN alumnocurso ac ON a.id = ac.alumnoid
-        JOIN alumnogrupo ag ON ac.id = ag.alumnocursoid
-        JOIN grupo g ON ag.grupoid = g.id
+        LEFT JOIN alumnogrupo ag ON ac.id = ag.alumnocursoid
+        LEFT JOIN grupo g ON ag.grupoid = g.id
         WHERE ac.cursoid = :cursoId
         ORDER BY g.codigo ASC
         
     """)
     Flux<Alumno> findByCursoId(Integer cursoId);
+
+    @Query("""
+        SELECT ac.id
+        FROM alumnocurso ac
+        JOIN alumno a ON ac.alumnoid = a.id
+        WHERE ac.cursoid = :cursoId
+        AND TRIM(a.nombres) = TRIM(:nombre) 
+        AND TRIM(a.apellidos) = TRIM(:apellido)
+    """)
+    Mono<Long> findByNombreAndApellidoAndCursoId(String nombre, String apellido, Integer cursoId);
+
+    @Query("""
+        SELECT EXISTS (
+            SELECT 1
+            FROM alumnocurso ac
+            WHERE ac.id = :alumnocursoId
+            AND ac.cursoid = :cursoId
+        )
+    """)
+    Mono<Boolean> inCurso(Integer alumnocursoId, Integer cursoId);
 }

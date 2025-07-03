@@ -13,15 +13,20 @@ import com.modulodocente.backend.domain.model.AlumnoGrupo;
 public interface AlumnoGrupoRepository extends ReactiveCrudRepository<AlumnoGrupo, Long> {
 
 
+    // Derived query method - no need for @Query
     Mono<Boolean> existsByAlumnocursoid(Long alumnocursoid);
+    
+    @Query("SELECT * FROM alumnogrupo WHERE alumnogrupo.alumnocursoid = :alumnocursoid")
+    Mono<AlumnoGrupo> findByAlumnocursoid(Long alumnocursoid);
 
-    @Query("UPDATE alumnogrupo SET grupoid = :grupoid WHERE alumnocursoid = :alumnocursoid")
-    Mono<Void> updateGrupoid(Long id, Long grupoid);
+    @Query("UPDATE alumnogrupo SET grupoid = :grupoId WHERE alumnocursoid = :alumnocursoId")
+    Mono<Integer> updateGrupoid(Long alumnocursoId, 
+                               Long grupoId);
 
     @Query("DELETE FROM alumnogrupo WHERE alumnocursoid = :alumnocursoid")
-    Mono<Void> deleteByAlumnocursoid(Long alumnocursoid);
+    Mono<Integer> deleteByAlumnocursoid(Long alumnocursoid);
 
     @Query("DELETE FROM alumnogrupo WHERE grupoid = :grupoid")
-    Mono<Void> deleteByGrupoid(Long grupoid);
+    Mono<Integer> deleteByGrupoid(Long grupoid);
 
 }
