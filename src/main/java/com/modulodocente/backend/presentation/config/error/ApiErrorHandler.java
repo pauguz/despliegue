@@ -51,13 +51,15 @@ public class ApiErrorHandler {
                 );
 
             default:
+            
+                error.printStackTrace();
                 return new ApiErrorResponse(
                     "/v1/errors/desconocido",
                     "Error inesperado",
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Ocurrió un error inesperado, contacte al administrador",
-                    path,
-                    error.printStackTrace()
+                    path
+
                 );
         }
     }
