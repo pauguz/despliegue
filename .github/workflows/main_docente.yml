@@ -24,42 +24,41 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Verificar JAR
+      - name: Verificar archivo JAR generado
         run: ls -lh target/
 
-      - name: Upload artifact for deployment job
+      - name: Subir JAR como artifact
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: target/*.jar
+          path: target/backend-0.0.1-SNAPSHOT.jar  # ✅ JAR específico
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-
     permissions:
       id-token: write
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Descargar artifact del job de build
         uses: actions/download-artifact@v4
         with:
           name: java-app
 
-      - name: Mostrar archivos descargados
+      - name: Verificar contenido descargado
         run: ls -lh java-app
 
-      - name: Login to Azure
+      - name: Iniciar sesión en Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_71F2093BA55645F69066EBDA9332DE83 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_014958C4218244CD84851E674E277E87 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E5F94CC8569143A19A07E2D2081AF2AF }}
 
-      - name: Deploy to Azure Web App
+      - name: Desplegar JAR a Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Docente'
           slot-name: 'Production'
-          package: java-app/*.jar
+          package: java-app/backend-0.0.1-SNAPSHOT.jar  # ✅ ruta exacta del JAR
