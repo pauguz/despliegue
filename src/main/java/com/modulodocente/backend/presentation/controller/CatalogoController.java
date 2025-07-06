@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/catalogo")
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class CatalogoController {
 
     private final CategoriaRepository categoriaRepo;
