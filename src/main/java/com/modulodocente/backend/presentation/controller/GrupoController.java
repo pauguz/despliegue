@@ -1,4 +1,4 @@
-package com.modulodocente.backend.controller;
+package com.modulodocente.backend.presentation.controller;
 
 import java.util.List;
 
@@ -35,9 +35,6 @@ public class GrupoController {
     public Flux<Grupo> getGruposByCursoId(@PathVariable Integer cursoId) {
         return grupoRepository.findByCursoId(cursoId);
     }
-
-
-
 
     //Obtener grupos por alumno y curso
     @GetMapping("alumnos/{cursoId}")
@@ -107,8 +104,4 @@ public class GrupoController {
     public Mono<Grupo> getGrupoByCodigoAndCursoId(@PathVariable String codigo, @PathVariable Integer cursoId) {
         return grupoRepository.findByCodigoAndCursoId(codigo, cursoId);
     }
-
-
-
-
 }

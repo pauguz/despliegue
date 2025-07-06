@@ -1,2 +1,15 @@
+<<<<<<< HEAD
+runtime: java17
+instance_class: F1
+
+entrypoint: java -jar target/backend-0.0.1-SNAPSHOT.jar
+
+handlers:
+  - url: /.*
+    script: auto
+
+    
+=======
 runtime: java21
 instance_class: F1
+>>>>>>> 35a1b84417a7d0a140ec259a5291a85bd151f354

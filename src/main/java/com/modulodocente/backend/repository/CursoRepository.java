@@ -15,7 +15,7 @@ public interface CursoRepository extends ReactiveCrudRepository<Curso, Integer> 
     @Query("SELECT id, nombre, codigo FROM curso WHERE id = :id")
     Mono<Curso> findById(Integer id);
 
-    @Query("SELECT id, nombre, codigo FROM curso WHERE LOWER(nombre) LIKE LOWER(CONCAT(:parte, '%'))")
+    @Query("SELECT * FROM curso WHERE LOWER(nombre) LIKE LOWER(CONCAT(:parte, '%'))")
     Flux<Curso> findByNombreContaining(String parteNombre);
 
 }

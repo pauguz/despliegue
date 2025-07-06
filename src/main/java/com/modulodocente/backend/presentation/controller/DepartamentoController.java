@@ -1,4 +1,4 @@
-package com.modulodocente.backend.controller;
+package com.modulodocente.backend.presentation.controller;
 
 import com.modulodocente.backend.domain.model.Departamento;
 import com.modulodocente.backend.repository.DepartamentoRepository;
