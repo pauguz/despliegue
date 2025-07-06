@@ -32,7 +32,6 @@ jobs:
         with:
           name: java-app
           path: target/backend-0.0.1-SNAPSHOT.jar  # ✅ JAR específico
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -41,15 +40,15 @@ jobs:
       contents: read
 
     steps:
-      - name: Descargar artifact del job de build
+      - name: Descargar artifact
         uses: actions/download-artifact@v4
         with:
           name: java-app
 
-      - name: Verificar contenido descargado
-        run: ls -lh java-app
+      - name: Verificar archivos descargados
+        run: ls -lh
 
-      - name: Iniciar sesión en Azure
+      - name: Login a Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_71F2093BA55645F69066EBDA9332DE83 }}
@@ -61,4 +60,5 @@ jobs:
         with:
           app-name: 'Docente'
           slot-name: 'Production'
-          package: java-app/backend-0.0.1-SNAPSHOT.jar  # ✅ ruta exacta del JAR
+          package: backend-0.0.1-SNAPSHOT.jar  # ✅ Aquí es clave
+
