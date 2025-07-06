@@ -51,7 +51,9 @@ public class ApiErrorHandler {
                 );
 
             default:
-            
+                System.out.println("💥 Error inesperado en instancia: " + path);
+                System.out.println("💥 Clase: " + error.getClass().getName());
+                System.out.println("💥 Mensaje: " + error.getMessage());
                 error.printStackTrace();
                 return new ApiErrorResponse(
                     "/v1/errors/desconocido",
