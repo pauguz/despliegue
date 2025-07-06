@@ -56,7 +56,8 @@ public class ApiErrorHandler {
                     "Error inesperado",
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Ocurrió un error inesperado, contacte al administrador",
-                    path
+                    path,
+                    error.printStackTrace()
                 );
         }
     }
