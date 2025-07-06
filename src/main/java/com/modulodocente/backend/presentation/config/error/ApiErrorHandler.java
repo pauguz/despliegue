@@ -3,9 +3,6 @@ package com.modulodocente.backend.presentation.config.error;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import com.modulodocente.backend.application.error.CursoNoEncontradoException;
-import com.modulodocente.backend.shared.error.AyudaDocException;
-
 import java.util.Locale;
 import java.util.Map;
 
@@ -24,25 +21,7 @@ public class ApiErrorHandler {
         System.out.println("🔴 Error capturado: " + errorName + " - " + message);
 
         switch (errorName) {
-            case "cursonoencontradoexception":
-                CursoNoEncontradoException cursoEx = (CursoNoEncontradoException) error;
-                return new ApiErrorResponse(
-                    "/v1/errors/cursonoencontrado",
-                    cursoEx.getMessage(),
-                    HttpStatus.BAD_REQUEST,
-                    cursoEx.getDetail(),
-                    path
-                );
 
-            case "ayudadocexception":
-                AyudaDocException ayudaEx = (AyudaDocException) error;
-                return new ApiErrorResponse(
-                    "/v1/errors/ayudadoc",
-                    ayudaEx.getMessage(),
-                    HttpStatus.BAD_REQUEST,
-                    ayudaEx.getDetail(),
-                    path
-                );
 
             case "illegalargumentexception":
                 return new ApiErrorResponse(
