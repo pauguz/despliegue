@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import org.springframework.r2dbc.core.DatabaseClient;
-
+import org.springframework.web.reactive.function.client.WebClient;
 
 
 @RestController
@@ -13,6 +13,8 @@ import org.springframework.r2dbc.core.DatabaseClient;
 public class DBTestController {
 
     private final DatabaseClient databaseClient;
+
+    private final WebClient webClient;
 
     public DBTestController(DatabaseClient databaseClient) {
         this.databaseClient = databaseClient;
