@@ -7,14 +7,11 @@ import reactor.core.publisher.Mono;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
 @RestController
 @RequestMapping("/api/test-db")
 public class DBTestController {
 
     private final DatabaseClient databaseClient;
-
-    private final WebClient webClient;
 
     public DBTestController(DatabaseClient databaseClient) {
         this.databaseClient = databaseClient;
@@ -29,9 +26,9 @@ public class DBTestController {
 
     @GetMapping("/ip")
     public Mono<String> getIp() {
-    return WebClient.create("https://api.ipify.org")
-        .get()
-        .retrieve()
-        .bodyToMono(String.class);
-}
+        return WebClient.create("https://api.ipify.org")
+            .get()
+            .retrieve()
+            .bodyToMono(String.class);
+    }
 }
