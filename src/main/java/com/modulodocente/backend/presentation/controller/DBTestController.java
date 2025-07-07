@@ -24,4 +24,12 @@ public class DBTestController {
             .map(count -> "Conexión exitosa con la base de datos")
             .onErrorResume(e -> Mono.just("Fallo conexión DB: " + e.getMessage()));
     }
+
+    @GetMapping("/ip")
+    public Mono<String> getIp() {
+    return WebClient.create("https://api.ipify.org")
+        .get()
+        .retrieve()
+        .bodyToMono(String.class);
+}
 }
