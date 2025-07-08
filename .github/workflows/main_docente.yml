@@ -48,6 +48,13 @@ jobs:
       - name: Verificar archivos descargados
         run: ls -lh
 
+      - name: Exportar secretos como variables de entorno
+        run: |
+          echo "SPRING_R2DBC_URL=${{ secrets.SPRING_R2DBC_URL }}" >> $GITHUB_ENV
+          echo "SPRING_R2DBC_USERNAME=${{ secrets.SPRING_R2DBC_USERNAME }}" >> $GITHUB_ENV
+          echo "SPRING_R2DBC_PASSWORD=${{ secrets.SPRING_R2DBC_PASSWORD }}" >> $GITHUB_ENV
+
+
       - name: Login a Azure
         uses: azure/login@v2
         with:
