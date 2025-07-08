@@ -20,6 +20,13 @@ jobs:
         with:
           java-version: '21'
           distribution: 'microsoft'
+      
+      - name: Exportar secretos como variables de entorno
+        run: |
+          echo "SPRING_R2DBC_URL=${{ secrets.SPRING_R2DBC_URL }}" >> $GITHUB_ENV
+          echo "SPRING_R2DBC_USERNAME=${{ secrets.SPRING_R2DBC_USERNAME }}" >> $GITHUB_ENV
+          echo "SPRING_R2DBC_PASSWORD=${{ secrets.SPRING_R2DBC_PASSWORD }}" >> $GITHUB_ENV
+
 
       - name: Build with Maven
         run: mvn clean install
@@ -48,11 +55,6 @@ jobs:
       - name: Verificar archivos descargados
         run: ls -lh
 
-      - name: Exportar secretos como variables de entorno
-        run: |
-          echo "SPRING_R2DBC_URL=${{ secrets.SPRING_R2DBC_URL }}" >> $GITHUB_ENV
-          echo "SPRING_R2DBC_USERNAME=${{ secrets.SPRING_R2DBC_USERNAME }}" >> $GITHUB_ENV
-          echo "SPRING_R2DBC_PASSWORD=${{ secrets.SPRING_R2DBC_PASSWORD }}" >> $GITHUB_ENV
 
 
       - name: Login a Azure
