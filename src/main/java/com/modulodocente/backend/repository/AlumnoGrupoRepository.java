@@ -29,4 +29,14 @@ public interface AlumnoGrupoRepository extends ReactiveCrudRepository<AlumnoGrup
     @Query("DELETE FROM alumnogrupo WHERE grupoid = :grupoid")
     Mono<Integer> deleteByGrupoid(Long grupoid);
 
+    @Query("""
+            
+            DELETE FROM alumnogrupo 
+            WHERE grupoid = :grupoid AND alumnocursoid IN (
+                SELECT alumnocursoid FROM alumnocurso WHERE cursoId = :cursoId
+            )
+
+            """)
+    Mono<Integer> deleteByGrupoidAndCursoId(Long grupoid, Long cursoId);
+
 }

@@ -88,15 +88,15 @@ public class GrupoController {
 
 
     @PostMapping("eliminargrupo")
-    public Mono<Void> eliminarGrupo(@RequestParam Long grupoId) {
+    public Mono<Void> eliminarGrupo(@RequestParam Long grupoId, @RequestParam Long cursoId) {
         return alumnoGrupoRepository.deleteByGrupoid(grupoId)
             .then(grupoRepository.deleteById(grupoId))
             .then(); // Devuelve Mono<Void>
     }
 
     @PostMapping("vaciargrupo")
-    public Mono<Void> vaciarGrupo(@RequestParam Long grupoId) {
-        return alumnoGrupoRepository.deleteByGrupoid(grupoId)
+    public Mono<Void> vaciarGrupo(@RequestParam Long grupoId, @RequestParam Long cursoId) {
+        return alumnoGrupoRepository.deleteByGrupoidAndCursoId(grupoId, cursoId)
             .then();
     }
 
