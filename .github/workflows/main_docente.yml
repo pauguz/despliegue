@@ -21,6 +21,12 @@ jobs:
           java-version: '21'
           distribution: 'microsoft'
 
+      - name: Exportar secretos como variables de entorno
+        run: |
+            echo "SPRING_R2DBC_URL=${{ secrets.SPRING_R2DBC_URL }}" >> $GITHUB_ENV
+            echo "SPRING_R2DBC_USERNAME=${{ secrets.SPRING_R2DBC_USERNAME }}" >> $GITHUB_ENV
+            echo "SPRING_R2DBC_PASSWORD=${{ secrets.SPRING_R2DBC_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Ejecutar pruebas
         run: mvn test
         env:
