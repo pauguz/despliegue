@@ -118,6 +118,11 @@ public class AlumnoController {
         return alumnoRepository.findByNombreAndApellidoAndCursoId(nombre, apellido, cursoId);
     }
 
+    @GetMapping("/codigo/{codigo}")
+    public Mono<Alumno> buscarAlumnoPorCodigo(@PathVariable String codigo) {
+        return alumnoRepository.findByCodigo(codigo);
+    }
+
     @GetMapping("/in-curso/{alumnocursoId}/{cursoId}")
     public Mono<Boolean> inCurso(@PathVariable Integer alumnocursoId, @PathVariable Integer cursoId) {
         return alumnoRepository.inCurso(alumnocursoId, cursoId);
