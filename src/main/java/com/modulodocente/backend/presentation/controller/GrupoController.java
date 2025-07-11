@@ -15,6 +15,7 @@ import com.modulodocente.backend.domain.model.Grupo;
 import com.modulodocente.backend.repository.CursoRepository;
 import com.modulodocente.backend.repository.GrupoRepository;
 import com.modulodocente.backend.repository.AlumnoGrupoRepository;
+import com.modulodocente.backend.repository.AlumnoNotaRepository;
 
 
 @RestController
@@ -30,6 +31,9 @@ public class GrupoController {
 
     @Autowired
     private CursoRepository cursoRepository;
+
+    @Autowired
+    private AlumnoNotaRepository alumnoNotaRepository;
 
     @GetMapping("curso/{cursoId}")
     public Flux<Grupo> getGruposByCursoId(@PathVariable Integer cursoId) {
@@ -53,11 +57,20 @@ public class GrupoController {
         return cursoRepository.findByNombreContaining(parteNombre);
     }
 
+    @GetMapping("promedio/{grupoId}/{cursoId}/{componenteNotaId}")
+    public Mono<Double> getPromedioByGrupoId(@PathVariable Integer grupoId, @PathVariable Integer cursoId, @PathVariable Integer componenteNotaId) {
+        return alumnoNotaRepository.getPromedioByGrupoId(grupoId, cursoId, componenteNotaId);
+    }
+
+
+
     @PostMapping("creargrupo")
     public Mono<Grupo> crearGrupo(@RequestBody Grupo grupo) {
         
         return grupoRepository.save(grupo);
     }
+
+    
 
     @PostMapping("agregaralumnos")
     public Mono<ResponseEntity<String>> desdeAlumnos(
@@ -88,7 +101,7 @@ public class GrupoController {
 
 
     @PostMapping("eliminargrupo")
-    public Mono<Void> eliminarGrupo(@RequestParam Long grupoId, @RequestParam Long cursoId) {
+    public Mono<Void> eliminarGrupo(@RequestParam Long grupoId) {
         return alumnoGrupoRepository.deleteByGrupoid(grupoId)
             .then(grupoRepository.deleteById(grupoId))
             .then(); // Devuelve Mono<Void>
@@ -104,4 +117,6 @@ public class GrupoController {
     public Mono<Grupo> getGrupoByCodigoAndCursoId(@PathVariable String codigo, @PathVariable Integer cursoId) {
         return grupoRepository.findByCodigoAndCursoId(codigo, cursoId);
     }
+
+
 }
