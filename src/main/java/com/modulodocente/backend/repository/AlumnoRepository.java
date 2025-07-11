@@ -4,6 +4,7 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
 import com.modulodocente.backend.domain.model.Alumno;
+import com.modulodocente.backend.dto.AlumnoConGrupoDTO;
 
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
@@ -58,4 +59,21 @@ public interface AlumnoRepository extends ReactiveCrudRepository<Alumno, Long> {
         )
     """)
     Mono<Boolean> inCurso(Integer alumnocursoId, Integer cursoId);
+
+    @Query("""
+    SELECT 
+        a.id AS alumnoId,
+        a.codigo AS codigo,
+        a.nombres AS nombres,
+        a.apellidos AS apellidos,
+        a.email AS email,
+        g.id AS grupoId,
+        g.codigo AS grupoCodigo
+        FROM alumno a
+        JOIN alumnocurso ac ON a.id = ac.alumnoid
+        LEFT JOIN alumnogrupo ag ON ac.id = ag.alumnocursoid
+        LEFT JOIN grupo g ON ag.grupoid = g.id
+        WHERE ac.cursoid = :cursoId
+    """)
+    Flux<AlumnoConGrupoDTO> findAlumnosConGrupoByCursoId(Integer cursoId);
 }
