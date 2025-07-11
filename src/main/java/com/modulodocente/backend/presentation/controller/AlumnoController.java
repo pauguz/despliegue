@@ -2,6 +2,8 @@ package com.modulodocente.backend.presentation.controller;
 
 import com.modulodocente.backend.domain.model.Alumno;
 import com.modulodocente.backend.repository.AlumnoRepository;
+import com.modulodocente.backend.dto.AlumnoConGrupoDTO;
+import com.modulodocente.backend.repository.impl.AlumnoRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -126,6 +128,14 @@ public class AlumnoController {
     @GetMapping("/in-curso/{alumnocursoId}/{cursoId}")
     public Mono<Boolean> inCurso(@PathVariable Integer alumnocursoId, @PathVariable Integer cursoId) {
         return alumnoRepository.inCurso(alumnocursoId, cursoId);
+    }
+
+    @Autowired
+    private AlumnoRepositoryImpl alumnoRepositoryImpl;
+
+    @GetMapping("/curso/{cursoId}/con-grupo")
+    public Flux<AlumnoConGrupoDTO> obtenerAlumnosConGrupoPorCurso(@PathVariable Integer cursoId) {
+        return alumnoRepositoryImpl.obtenerAlumnosConGrupoPorCurso(cursoId);
     }
 
 }
