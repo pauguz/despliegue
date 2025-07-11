@@ -44,9 +44,10 @@ public interface GrupoRepository extends ReactiveCrudRepository<Grupo, Integer> 
     @Query("""
         SELECT COUNT(ag.id)
         FROM alumnogrupo ag
-        WHERE ag.grupoid = :grupoId
+        JOIN alumnocurso ac ON ag.alumnocursoid = ac.id
+        WHERE ag.grupoid = :grupoId AND ac.cursoid = :cursoId
     """)
-    Mono<Integer> countAlumnosByGrupoId(Integer grupoId);
+    Mono<Integer> countAlumnosByGrupoIdAndCursoId(Integer grupoId, Integer cursoId);
 
     @Query("""
         DELETE FROM alumnogrupo
@@ -63,4 +64,5 @@ public interface GrupoRepository extends ReactiveCrudRepository<Grupo, Integer> 
     """)
     Mono<Grupo> findByCodigoAndCursoId(String codigo, Integer cursoId);
 
+    
 }

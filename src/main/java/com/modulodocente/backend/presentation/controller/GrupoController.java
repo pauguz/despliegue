@@ -118,5 +118,10 @@ public class GrupoController {
         return grupoRepository.findByCodigoAndCursoId(codigo, cursoId);
     }
 
+    @GetMapping("countalumnos/{grupoId}/{cursoId}")
+    public Mono<Integer> countAlumnosByGrupoIdAndCursoId(@PathVariable Integer grupoId, @PathVariable Integer cursoId) {
+        return grupoRepository.countAlumnosByGrupoIdAndCursoId(grupoId, cursoId);
+    }
+
 
 }
